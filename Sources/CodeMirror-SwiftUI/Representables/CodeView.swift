@@ -18,7 +18,11 @@ typealias RepresentableView = UIViewRepresentable
 
 // MARK: - CodeView
 
-public struct CodeView: RepresentableView {
+public struct CodeView: UIViewRepresentable {
+    
+    public typealias UIViewType = WKWebView
+    
+    
     @Binding var code: String
     
     var theme: CodeViewTheme
@@ -48,29 +52,14 @@ public struct CodeView: RepresentableView {
         self.lineNumbers = lineNumbers
     }
     
-    // MARK: - Life Cycle
     
-    #if os(OSX)
-    public func makeNSView(context: Context) -> WKWebView {
-        createWebView(context)
-    }
-    
-    #elseif os(iOS)
     public func makeUIView(context: Context) -> WKWebView {
         createWebView(context)
     }
-    #endif
     
-    #if os(OSX)
-    public func updateNSView(_ codeMirrorView: WKWebView, context: Context) {
-        updateWebView(context)
-    }
-    
-    #elseif os(iOS)
     public func updateUIView(_ uiView: WKWebView, context: Context) {
         updateWebView(context)
     }
-    #endif
     
     public func makeCoordinator() -> CodeViewController {
         CodeViewController(self)
@@ -134,7 +123,6 @@ extension CodeView {
         
         context.coordinator.setWebView(webView)
         context.coordinator.setThemeName(theme.rawValue)
-        
         context.coordinator.setMimeType(mode.mimeType)
         context.coordinator.setContent(code)
         context.coordinator.setFontSize(fontSize)
