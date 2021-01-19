@@ -158,7 +158,7 @@
       CodeMirror.keyMap["default"]["Cmd-/"] = "toggleComment";  // Add-on
 
       var editor = CodeMirror(document.body, {
-        lineNumbers: false,
+        lineNumbers: true,
         autofocus: true,
         mode: "text/html",
         theme: "material-palenight",
@@ -182,7 +182,15 @@
       function getStringFromHex(content) {
         return decodeURIComponent(content.replace(/\s+/g, '').replace(/[0-9a-f]{2}/g, '%$&'));
       }
+    
+      function SetLineNumbers(wrapping) {
+        editor.setOption("lineNumbers", wrapping);
+      }
 
+      function GetLineNumbers() {
+        return editor.getOption("lineNumbers");
+      }
+    
       function SupportedMimeTypes() {
         return Object.keys(CodeMirror.mimeModes).join(",");
       }
